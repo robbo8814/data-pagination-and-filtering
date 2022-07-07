@@ -3,40 +3,26 @@ Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
 
-
-
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
-
-
-
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
 const currentStudent = document.querySelector('.student-list');
 const perPage = 9;
 let list = data;
 
+// showPage function to display student data
+
 function showPage(page, results) {
-   let endIndex = perPage * page; // 9*1=9
-   const startIndex = endIndex - perPage; // 9-9=0
-   if (endIndex > results.length) {
+   let endIndex = perPage * page;
+   const startIndex = endIndex - perPage;
+   if (endIndex > results.length) {    // Ensuring a page displays even if there's less than 9 students
       endIndex = results.length;
    }
    currentStudent.innerHTML = '';
-   if (results.length === 0) {
+   if (results.length === 0) {   // If no students match the search result display below
       currentStudent.innerHTML = `<h3 class="no-results">
       No results match your query</h3>`;
-      console.log('woohoo');
    } else {
-      for (i=startIndex; i<endIndex; i++) {
-      
-         let studentData = ''
-         studentData = `<li class="student-item cf">
+      for (i = startIndex; i < endIndex; i++) {
+         // let studentData = ''
+         let studentData = `<li class="student-item cf">
          <div class="student-details">
          <img class="avatar" src="${results[i].picture.medium}" alt="Profile Picture">
          <h3>${results[i].name.first} ${results[i].name.last}</h3>
@@ -52,21 +38,16 @@ function showPage(page, results) {
 }
 
 
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
-//NEED TO GET CSS FORMATTING WORKING - LIKELY NEED TO APPEND TO LI ELEMENT
+// Creating addPagination function to display functional page numbers at bottom of page
+
 function addPagination(results) {
    const pageNumsLength = Math.ceil(results.length / 9);
    const btnDisplay = document.querySelector('.link-list');
    btnDisplay.innerHTML = '';
    if (results.length === 0) {
-      console.log('no results')
       btnDisplay.innerHTML = '';
-      list = data;
    } else {
-   for (let i=0; i<pageNumsLength; i++) {   
+   for (let i = 0; i < pageNumsLength; i++) {   
       let btnCreate = `<li>
       <button type="button">${i+1}</button>
     </li>`
@@ -85,41 +66,52 @@ function addPagination(results) {
 }
 }
 
+ // Creating function to use showPage & addPagination functions
+ function displayPage(startPage, data) {
+   showPage(startPage, data);
+   addPagination(data);
+}
+
+// Creating search box
 const searchBox = document.querySelector('header');
 searchBox.innerHTML += `<label for="search" class="student-search">
             <span>Search by name</span>
             <input id="search" placeholder="Search by name...">
             <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
           </label>`
-
 const searchInput = document.getElementById('search');
 const searchInputBtn = document.querySelector('header button')
 
+// Creating search box functionality to search student data object values
 function findSearchResults(query) {
    let input = query.toLowerCase();
-   // list = data.filter(e => e.name.first.toLowerCase() === input);
    list = data.filter(e => Object.values(e).map(e => String(e).toLowerCase()).some(e => e.includes(input)));
-   console.log(list);
    return list;
  };
 
-function displayPage() {
-   showPage(1, list);
-   addPagination(list);
-}
-
+// Event listeners for search box
 searchInput.addEventListener('keyup', (event) => {
    if(event.keyCode === 13) {
       findSearchResults(searchInput.value);
-      displayPage();
+      displayPage(1, list);
    }
 })
-searchInputBtn.addEventListener('click', (event) => {
+searchInputBtn.addEventListener('click', () => {
    findSearchResults(searchInput.value);
-   displayPage();
+   displayPage(1, list);
 })
 
+// Added a show-all button to return to full list of students and clear search input
+const showAll = `<div>
+<button type="button" class="show-all">Show All</button>
+</div>`
+searchBox.insertAdjacentHTML("beforeend", showAll);
+const showAllBtn = document.querySelector('.show-all');
+showAllBtn.addEventListener('click', (event) => {
+   list = data;
+   displayPage(1,list);
+   searchInput.value = '';
+})
 
-// Call functions
-showPage(1, list);
-addPagination(list);
+// Display first page
+displayPage(1, list);

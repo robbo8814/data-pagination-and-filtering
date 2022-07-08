@@ -21,7 +21,6 @@ function showPage(page, results) {
       No results match your query</h3>`;
    } else {
       for (i = startIndex; i < endIndex; i++) {
-         // let studentData = ''
          let studentData = `<li class="student-item cf">
          <div class="student-details">
          <img class="avatar" src="${results[i].picture.medium}" alt="Profile Picture">
@@ -84,9 +83,9 @@ const searchInputBtn = document.querySelector('header button')
 
 // Creating search box functionality to search student data object values
 function findSearchResults(query) {
-   let input = query.toLowerCase();
+   // let input = query.toLowerCase();
    list = data.filter(function(data) {
-      return data.name.first.toLowerCase() == input || data.name.last.toLowerCase() == input;
+      return data.name.first.toLowerCase() == query.toLowerCase() || data.name.last.toLowerCase() == query.toLowerCase();
    });
    
    return list;
@@ -97,17 +96,14 @@ searchInput.addEventListener('keyup', (event) => {
    if(event.key === 'Enter') {
       findSearchResults(searchInput.value);
       displayPage(1, list);
-      displayShowAllBtn();
    }
 })
 searchInputBtn.addEventListener('click', () => {
    findSearchResults(searchInput.value);
    displayPage(1, list);
-   displayShowAllBtn();
 })
 
 // Added a show-all button to return to full list of students and clear search input
-function displayShowAllBtn() {
 let showAll = `<div>
 <button type="button" class="show-all">Show All</button>
 </div>`
@@ -118,9 +114,7 @@ showAllBtn.addEventListener('click', (event) => {
    list = data;
    displayPage(1,list);
    searchInput.value = '';
-   document.querySelector('.show-all').remove();
-})
-};
+});
 
 // Display first page
 displayPage(1, list);

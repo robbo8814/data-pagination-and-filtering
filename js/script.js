@@ -19,7 +19,7 @@ function showPage(page, results) {
    if (results.length === 0) {   // If no students match the search result display below
       currentStudent.innerHTML = `<h3 class="no-results">
       No results match your query</h3>`;
-   } else {
+   } else {    // Display a page of students
       for (i = startIndex; i < endIndex; i++) {
          let studentData = `<li class="student-item cf">
          <div class="student-details">
@@ -66,6 +66,7 @@ function addPagination(results) {
 }
 
  // Creating function to use showPage & addPagination functions
+ 
  function displayPage(startPage, data) {
    showPage(startPage, data);
    addPagination(data);

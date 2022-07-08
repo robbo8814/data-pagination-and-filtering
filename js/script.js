@@ -44,24 +44,24 @@ function addPagination(results) {
    const pageNumsLength = Math.ceil(results.length / 9);
    const btnDisplay = document.querySelector('.link-list');
    btnDisplay.innerHTML = '';
-   if (results.length === 0) {
-      btnDisplay.innerHTML = '';
-   } else {
-   for (let i = 0; i < pageNumsLength; i++) {   
-      let btnCreate = `<li>
-      <button type="button">${i+1}</button>
-    </li>`
-      btnDisplay.insertAdjacentHTML("beforeend", btnCreate);
-   }
-      btnDisplay.firstChild.className = 'active';
-
-      btnDisplay.addEventListener('click', (event) => {
-         if (event.target.tagName == "BUTTON") {
-            let oldBtn = document.querySelector('.active');
-            oldBtn.className = '';
-            event.target.className = 'active';
-            showPage(event.target.textContent, list);
-         }
+      if (results.length === 0) {
+         btnDisplay.innerHTML = '';
+      } else {
+      for (let i = 0; i < pageNumsLength; i++) {   
+         let btnCreate = `<li>
+         <button type="button">${i+1}</button>
+      </li>`
+         btnDisplay.insertAdjacentHTML("beforeend", btnCreate);
+      }
+   const firstBtn = document.querySelector('.link-list li button')
+   firstBtn.className = 'active';
+   btnDisplay.addEventListener('click', (event) => {
+      if (event.target.tagName == "BUTTON") {
+         let oldBtn = document.querySelector('.active');
+         oldBtn.className = '';
+         event.target.className = 'active';
+         showPage(event.target.textContent, list);
+      }
    })
 }
 }
@@ -85,33 +85,42 @@ const searchInputBtn = document.querySelector('header button')
 // Creating search box functionality to search student data object values
 function findSearchResults(query) {
    let input = query.toLowerCase();
-   list = data.filter(e => Object.values(e).map(e => String(e).toLowerCase()).some(e => e.includes(input)));
+   list = data.filter(function(data) {
+      return data.name.first.toLowerCase() == input || data.name.last.toLowerCase() == input;
+   });
+   
    return list;
  };
 
-// Event listeners for search box
+ // Event listeners for search box
 searchInput.addEventListener('keyup', (event) => {
-   if(event.keyCode === 13) {
+   if(event.key === 'Enter') {
       findSearchResults(searchInput.value);
       displayPage(1, list);
+      displayShowAllBtn();
    }
 })
 searchInputBtn.addEventListener('click', () => {
    findSearchResults(searchInput.value);
    displayPage(1, list);
+   displayShowAllBtn();
 })
 
 // Added a show-all button to return to full list of students and clear search input
-const showAll = `<div>
+function displayShowAllBtn() {
+let showAll = `<div>
 <button type="button" class="show-all">Show All</button>
 </div>`
 searchBox.insertAdjacentHTML("beforeend", showAll);
 const showAllBtn = document.querySelector('.show-all');
+// Shows all data again starting at page 1 & removes the show-all button
 showAllBtn.addEventListener('click', (event) => {
    list = data;
    displayPage(1,list);
    searchInput.value = '';
+   document.querySelector('.show-all').remove();
 })
+};
 
 // Display first page
 displayPage(1, list);

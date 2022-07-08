@@ -109,7 +109,6 @@ let showAll = `<div>
 </div>`
 searchBox.insertAdjacentHTML("beforeend", showAll);
 const showAllBtn = document.querySelector('.show-all');
-// Shows all data again starting at page 1 & removes the show-all button
 showAllBtn.addEventListener('click', (event) => {
    list = data;
    displayPage(1,list);

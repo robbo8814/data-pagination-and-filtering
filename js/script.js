@@ -66,7 +66,7 @@ function addPagination(results) {
 }
 
  // Creating function to use showPage & addPagination functions
- 
+
  function displayPage(startPage, data) {
    showPage(startPage, data);
    addPagination(data);
@@ -105,7 +105,7 @@ searchInputBtn.addEventListener('click', () => {
 })
 
 // Added a show-all button to return to full list of students and clear search input
-let showAll = `<div>
+const showAll = `<div>
 <button type="button" class="show-all">Show All</button>
 </div>`
 searchBox.insertAdjacentHTML("beforeend", showAll);

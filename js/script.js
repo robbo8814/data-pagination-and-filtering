@@ -84,12 +84,12 @@ const searchInputBtn = document.querySelector('header button')
 
 // Creating search box functionality to search student data object values
 function findSearchResults(query) {
-   // let input = query.toLowerCase();
-   list = data.filter(function(data) {
-      return data.name.first.toLowerCase() == query.toLowerCase() || data.name.last.toLowerCase() == query.toLowerCase();
-   });
-   
-   return list;
+   const input = (data) =>
+    [data.name.first.toLowerCase(), data.name.last.toLowerCase()]
+      .join("")
+      .toLowerCase()
+      .indexOf(query.toLowerCase()) !== -1;
+      list = data.filter(input);
  };
 
  // Event listeners for search box

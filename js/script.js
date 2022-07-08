@@ -67,7 +67,7 @@ function addPagination(results) {
 
  // Creating function to use showPage & addPagination functions
 
- function displayPage(startPage, data) {
+function displayPage(startPage, data) {
    showPage(startPage, data);
    addPagination(data);
 }
@@ -89,7 +89,7 @@ function findSearchResults(query) {
       .join("")
       .toLowerCase()
       .indexOf(query.toLowerCase()) !== -1;
-      list = data.filter(input);
+   list = data.filter(input);
  };
 
  // Event listeners for search box
